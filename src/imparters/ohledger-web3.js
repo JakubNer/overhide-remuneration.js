@@ -97,7 +97,7 @@ class ohledger_web3 {
     this.fire('onWalletPopup', {imparterTag: ohledger_web3.tag});
 
     this.domFns.hideAllPopupContents();
-    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 20);
     this.domFns.makePopupVisible();
 
     try {
@@ -114,7 +114,7 @@ class ohledger_web3 {
     const uri = this.getOverhideRemunerationAPIUri();
 
     this.domFns.hideAllPopupContents();
-    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 20);
     this.domFns.makePopupVisible();
 
     try {

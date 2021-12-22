@@ -62,8 +62,14 @@
         <i class="fa fa-spinner w3-spin" style="font-size:64px"></i>
       </div>      
     </div>
+    <span class="bottom-buttons">
+      <button class="w3-btn w3-border" style="width:40%;" onclick="cancel()">Cancel</button>
+    </span>
   </body>
   
   <script>
+    function cancel() {
+      window.parent.postMessage({event: 'oh$-popup-close'}, '*');
+    }
   </script>
 </html>
