@@ -4,9 +4,11 @@ import imparter_fns from '../fns/imparter_fns.js';
 class ohledger_web3 {
   static tag = 'ohledger-web3';
 
+  url = 'https://overhide.github.io/ledgers.js/src/frames';  
   mode = 'test';
 
-  constructor(overhide_wallet, web3_wallet, getToken, __fetch, fire) {
+  constructor(domFns, overhide_wallet, web3_wallet, getToken, __fetch, fire) {
+    this.domFns = domFns;
     this.web3_wallet = web3_wallet;
     this.overhide_wallet = overhide_wallet;
     this.__fetch = __fetch;
@@ -93,7 +95,16 @@ class ohledger_web3 {
   async sign(message) {
     if (!this.web3_wallet.walletAddress) throw new Error(`imparter ${ohledger_web3.tag} not active`);
     this.fire('onWalletPopup', {imparterTag: ohledger_web3.tag});
-    return (await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, ''));
+
+    this.domFns.hideAllPopupContents();
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.makePopupVisible();
+
+    try {
+      return await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, '');
+    } finally {
+      this.domFns.makePopupHidden(``, false);
+    }
   }
 
   async createTransaction(amount, to, options) {
@@ -102,16 +113,24 @@ class ohledger_web3 {
     const from = this.web3_wallet.walletAddress;
     const uri = this.getOverhideRemunerationAPIUri();
 
-    await ohledger_fns.createTransaction(
-      amount, 
-      from,
-      to,
-      (message) => this.sign(message),
-      (from, signature, message) => this.overhide_wallet.showOhLedgerGratisIframeUri(uri, from, signature, message), 
-      this.overhide_wallet.oh_ledger_transact_fn[this.mode], 
-      options);
+    this.domFns.hideAllPopupContents();
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.makePopupVisible();
 
-    return true;
+    try {
+      await ohledger_fns.createTransaction(
+        amount, 
+        from,
+        to,
+        (message) => this.sign(message),
+        (from, signature, message) => this.overhide_wallet.showOhLedgerGratisIframeUri(uri, from, signature, message), 
+        this.overhide_wallet.oh_ledger_transact_fn[this.mode], 
+        options);   
+
+      return true;
+    } finally {
+      this.domFns.makePopupHidden(``, false);
+    }
   }    
 }
 

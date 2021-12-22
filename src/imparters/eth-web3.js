@@ -8,7 +8,8 @@ class eth_web3 {
     'rinkeby':'https://rinkeby.ethereum.overhide.io'
   };
 
-  constructor(web3_wallet, getToken, __fetch, fire) {
+  constructor(domFns, web3_wallet, getToken, __fetch, fire) {
+    this.domFns = domFns;
     this.web3_wallet = web3_wallet;
     this.eth_accounts = web3_wallet.eth_accounts;
     this.getToken = getToken;
@@ -108,7 +109,16 @@ class eth_web3 {
   async sign(message) {
     if (!this.web3_wallet.walletAddress) throw new Error(`imparter ${eth_web3.tag} not active`);
     this.fire('onWalletPopup', {imparterTag: eth_web3.tag});
-    return (await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, ''));
+
+    this.domFns.hideAllPopupContents();
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.makePopupVisible();
+
+    try {
+      return (await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, ''));
+    } finally {
+      this.domFns.makePopupHidden(``, false);
+    }
   }
 
   async createTransaction(amount, to, options) {
@@ -118,17 +128,26 @@ class eth_web3 {
     const uri = this.getOverhideRemunerationAPIUri();
 
     this.fire('onWalletPopup', {imparterTag: eth_web3.tag});
-    await (new Promise((resolve, reject) => {
-      window.web3.eth.sendTransaction({ from: from, to: to, value: amount })
-      .on('confirmation', function (confirmationNumber, receipt) {
-        resolve();
-      })
-      .on('error', (error) => {
-        reject(error);
-      }); 
-    }));
 
-    return true;
+    this.domFns.hideAllPopupContents();
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 10);
+    this.domFns.makePopupVisible();
+
+    try {
+      await (new Promise((resolve, reject) => {
+        window.web3.eth.sendTransaction({ from: from, to: to, value: amount })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          resolve();
+        })
+        .on('error', (error) => {
+          reject(error);
+        }); 
+      }));
+  
+      return true;  
+    } finally {
+      this.domFns.makePopupHidden(``, false);
+    }
   }  
 }
 

@@ -688,6 +688,7 @@ const oh$ = (function() {
 
   const imparters = {};
   imparters[eth_web3.tag] = new eth_web3(
+    domFns,
     web3Wallet, 
     () => token,
     (...args) => __fetch(...args),
@@ -698,6 +699,7 @@ const oh$ = (function() {
     (...args) => __fetch(...args),
     (which, params) => fire(which, params));
   imparters[ohledger_web3.tag] = new ohledger_web3(
+    domFns,
     overhideWallet,
     web3Wallet,
     () => token,
