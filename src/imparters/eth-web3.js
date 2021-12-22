@@ -2,6 +2,7 @@ import imparter_fns from '../fns/imparter_fns.js';
 
 class eth_web3 {
   static tag = 'eth-web3';
+  url = 'https://overhide.github.io/ledgers.js/src/frames';  
 
   remuneration_uri = {
     'main':'https://ethereum.overhide.io',
@@ -111,7 +112,7 @@ class eth_web3 {
     this.fire('onWalletPopup', {imparterTag: eth_web3.tag});
 
     this.domFns.hideAllPopupContents();
-    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 20);
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 15);
     this.domFns.makePopupVisible();
 
     try {
@@ -130,7 +131,7 @@ class eth_web3 {
     this.fire('onWalletPopup', {imparterTag: eth_web3.tag});
 
     this.domFns.hideAllPopupContents();
-    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 20);
+    this.domFns.setFrame(`${this.url}/look_wallet.html`, 70, 15);
     this.domFns.makePopupVisible();
 
     try {
