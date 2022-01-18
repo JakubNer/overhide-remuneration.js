@@ -8,18 +8,18 @@ class ohledger_fns {
     if (details.mode !== 'prod' && details.mode !== 'test') throw new Error("'mode' must be 'prod' or 'test'");    
   }
 
-  static async createTransaction(amount, from, to, signFn, showGratisFn, ohLedgerTransactFn, options) {
+  static async createTransaction(token, amount, from, to, signFn, showGratisFn, ohLedgerTransactFn, options, signedToken = null) {
     if (amount == 0) {
       if ('message' in options && options.message && 'signature' in options && options.signature) {
         var message = options.message;
         var signature = options.signature;
       } else {
-        var message = `verify ownership of address by signing on ${new Date().toLocaleString()}`;
-        var signature = await signFn(message);
+        var message = token;
+        var signature = signedToken ? signedToken : await signFn(message);
       }
       await showGratisFn(from, signature, message);
     } else {
-      await ohLedgerTransactFn(amount, from, to);
+      await ohLedgerTransactFn(amount, from, to, true);
     }
   }
 }

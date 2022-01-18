@@ -28,6 +28,8 @@ The *business logic* does not leverage *ledgers.js*--the *library* is intended f
 
 For more information, videos, write-ups, please visit https://overhide.io.
 
+> For help, reach out on [r/overhide](https://www.reddit.com/r/overhide/).
+
 ## Getting a Taste
 
 You can see *ledgers.js* live as embedded in this [live API playground](https://overhide.github.io/ledgers.js/play/) learning tool.

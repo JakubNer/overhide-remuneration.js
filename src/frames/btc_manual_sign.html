@@ -169,7 +169,7 @@
         method: "POST",
         headers: { 
           'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Bearer ${data.token}`
+          'Authorization': data.token
         },
         body: JSON.stringify({
           signature: btoa(data.signature),

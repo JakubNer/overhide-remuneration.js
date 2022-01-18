@@ -7,6 +7,7 @@ class ohledger {
   address = null;
   secret = null;
   mode = 'test';
+  signedToken = null;
 
   constructor(overhide_wallet, web3_wallet, getToken, __fetch, fire) {
     this.overhide_wallet = overhide_wallet;
@@ -90,7 +91,7 @@ class ohledger {
     if (!this.address) throw new Error("from 'address' not set: use setCredentials");
     const from = this.address;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch, this.signedToken);
   }
 
   async isOnLedger(options) {
@@ -104,7 +105,7 @@ class ohledger {
       var message = options.message;
       var signature = options.signature;
     } else {
-      var message = `verify ownership of address by signing on ${new Date().toLocaleString()}`;
+      var message = this.getToken();
       var signature = await this.sign(message);
     }
 
@@ -113,7 +114,11 @@ class ohledger {
 
   async sign(message) {
     if (!this.secret) throw new Error(`credentials for imparter ${ohledger.tag} not set`);
-    return this.eth_accounts.sign(message, this.secret).signature;
+    const signature = await this.eth_accounts.sign(message, this.secret).signature;
+    if (message === this.getToken()) {
+      this.signedToken = signature;
+    }
+    return signature;
   }
 
   async createTransaction(amount, to, options) {
@@ -123,6 +128,7 @@ class ohledger {
     const uri = this.getOverhideRemunerationAPIUri();
 
     await ohledger_fns.createTransaction(
+      this.getToken(),
       amount, 
       from,
       to,

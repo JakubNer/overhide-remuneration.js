@@ -6,6 +6,7 @@ class ohledger_web3 {
 
   url = 'https://overhide.github.io/ledgers.js/src/frames';  
   mode = 'test';
+  signedToken = null;
 
   constructor(domFns, overhide_wallet, web3_wallet, getToken, __fetch, fire) {
     this.domFns = domFns;
@@ -71,7 +72,7 @@ class ohledger_web3 {
     if (!this.web3_wallet.walletAddress) throw new Error("from 'walletAddress' not set: use wallet");
     var from = this.web3_wallet.walletAddress;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch, this.signedToken);
   }  
 
   async isOnLedger(options) {
@@ -85,7 +86,7 @@ class ohledger_web3 {
       var message = options.message;
       var signature = options.signature;
     } else {
-      var message = `verify ownership of address by signing on ${new Date().toLocaleString()}`;
+      var message = this.getToken();
       var signature = await this.sign(message);
     }
 
@@ -101,7 +102,11 @@ class ohledger_web3 {
     this.domFns.makePopupVisible();
 
     try {
-      return await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, '');
+      const signature = await window.web3.eth.personal.sign(message, this.web3_wallet.walletAddress, '');
+      if (message === this.getToken()) {
+        this.signedToken = signature;
+      }  
+      return signature;
     } finally {
       this.domFns.makePopupHidden(``, false);
     }
@@ -119,6 +124,7 @@ class ohledger_web3 {
 
     try {
       await ohledger_fns.createTransaction(
+        this.getToken(),
         amount, 
         from,
         to,

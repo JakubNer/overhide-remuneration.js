@@ -636,6 +636,8 @@ const oh$ = (function() {
      *  > | btc-manual | null |
      *  > 
      *  > If *message* and *signature* are provided they are used instead of oh$ asking for wallet to resign message.
+     *  >
+     *  > For *overhide* ledger *message* must be a valid *overhide* `token` value such as passed into `enable`.
      *
      * @returns {Promise} of a 'true' for success or an Error; may fire [onWalletPopup](#eventonwalletpopup) event against `oh$`
      */
@@ -727,7 +729,7 @@ const oh$ = (function() {
   overhideWallet.init();
 
   function enable(_token, {fetcher} = {fetcher: fetch}) {
-    token = _token;
+    token = `Bearer ${_token}`;
     __fetch = fetcher;
     doEnable(true);
   }

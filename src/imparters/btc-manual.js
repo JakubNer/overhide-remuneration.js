@@ -94,7 +94,7 @@ class btc_manual {
     const now = (new Date()).toISOString();
     const result = await this.__fetch(`https://${hostPrefix}rates.overhide.io/rates/sat/${now}`, {
         headers: new Headers({
-          'Authorization': `Bearer ${this.getToken()}`
+          'Authorization': this.getToken()
         })
       })
       .then(res => res.json())

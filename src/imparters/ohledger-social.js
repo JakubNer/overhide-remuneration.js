@@ -7,6 +7,7 @@ class ohledger_social {
   address = null;
   mode = 'test';
   social = null;
+  signedToken = null;
 
   constructor(domFns, overhide_wallet, web3_wallet, getToken, __fetch, fire) {
     this.domFns = domFns;
@@ -108,7 +109,7 @@ class ohledger_social {
     if (!this.address) throw new Error("from 'address' not set: use setCredentials");
     const from = this.address;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch, this.signedToken);
   }
 
   async isOnLedger(options) {
@@ -122,7 +123,7 @@ class ohledger_social {
       var message = options.message;
       var signature = options.signature;
     } else {
-      var message = `verify ownership of address by signing on ${new Date().toLocaleString()}`;
+      var message = this.getToken();
       var signature = await this.sign(message);
     }
 
@@ -146,13 +147,17 @@ class ohledger_social {
         method: "GET",
         headers: { 
           'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Bearer ${this.getToken()}`
+          'Authorization': this.getToken()
         }})
       .then(async (result) => {
         if (result.status == 200) {
           const resultValue = await result.json();
           this.address = resultValue.address;
-          return atob(resultValue.signature);
+          const signature = atob(resultValue.signature);
+          if (message === this.getToken()) {
+            this.signedToken = signature;
+          }      
+          return signature;
         } else {
           throw new Error(await result.text());
         }
@@ -169,6 +174,7 @@ class ohledger_social {
     const uri = this.getOverhideRemunerationAPIUri();
 
     await ohledger_fns.createTransaction(
+      this.getToken(),
       amount, 
       from,
       to,

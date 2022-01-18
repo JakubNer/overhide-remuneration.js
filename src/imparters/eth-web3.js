@@ -65,7 +65,7 @@ class eth_web3 {
     const now = (new Date()).toISOString();
     const result = await this.__fetch(`https://${hostPrefix}rates.overhide.io/rates/wei/${now}`, {
         headers: new Headers({
-          'Authorization': `Bearer ${this.getToken()}`
+          'Authorization': this.getToken()
         })
       })
       .then(res => res.json())
