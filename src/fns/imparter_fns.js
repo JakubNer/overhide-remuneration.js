@@ -13,8 +13,9 @@ class imparter_fns {
     if (tallyDollars) {
       dollarsQuery = `&tally-dollars=true`
     }
+    let signedTokenQuery = '';
     if (signedToken) {
-      signedTokenQuery = `&signature=${bota(signedToken)}`
+      signedTokenQuery = `&signature=${btoa(signedToken)}`
     }
     return await __fetch(`${uri}/get-transactions/${from}/${to}?tally-only=${tallyOnly ? 'true' : 'false'}${dollarsQuery}${since}&include-refunds=true${signedTokenQuery}`, {
         headers: new Headers({

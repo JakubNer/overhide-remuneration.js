@@ -127,8 +127,9 @@ class ohledger {
     const from = this.address;
     const uri = this.getOverhideRemunerationAPIUri();
 
-    await ohledger_fns.createTransaction(
+    const [message, signature] = await ohledger_fns.createTransaction(
       this.getToken(),
+      this.signedToken,
       amount, 
       from,
       to,
@@ -136,6 +137,10 @@ class ohledger {
       (from, signature, message) => this.overhide_wallet.showOhLedgerGratisIframeUri(uri, from, signature, message), 
       this.overhide_wallet.oh_ledger_transact_fn[this.mode], 
       options);
+
+    if (message === this.getToken()) {
+      this.signedToken = signature;
+    }     
 
     return true;
   }  

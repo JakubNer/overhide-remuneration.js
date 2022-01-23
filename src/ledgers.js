@@ -404,8 +404,10 @@ const oh$ = (function() {
      *  > | eth-web3 | N/A | not suppoted |
      *  > | ohledger | `{address:..,secret:..}` | `address` is optional, if not set will be extracted from `secret` |
      *  > | ohledger-web3 | N/A | not supported |
-     *  > | ohledger-social | `{provider:..[, address:..]}` | `null` to log-out; `provider` is one of 'google' or 'microsoft'; optionally provide `address` if known -- to tally without signing |
+     *  > | ohledger-social | `{provider:..[, address:..]}` | `null` to log-out; `provider` is one of 'google' or 'microsoft'; optionally provide `address` if known. |
      *  > | btc-manual | `{address:..}` | |
+     *  >
+     *  > For *ohledger-social* the actual *address* will be retruned (via *onCredentialsUpdate* event) when calling *sign* or any other call that needs a signature.
      *
      * @returns {Promise} representing a 'true' if success else 'false'; also fires [onCredentialsUpdate](#eventoncredentialsupdate) event against `oh$`
      */
@@ -560,6 +562,10 @@ const oh$ = (function() {
      *  > | ohledger-web3 | `{address:..}` |
      *  > | ohledger-social | `{address:..}` |
      *  > | btc-manual | `{address:..}` |
+     *  > 
+     *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
+     *  > this method.  The easiest is to simply call *sign* without any parameters.  Without a properly signed *token*, only
+     *  > public transactions -- those created using *createTransaction* without `isPrivate` flag -- are retruned.
      *
      * @returns {Promise} with the `{'transactions': [{"transaction-value":..,"transaction-date":..},..], 'as-of':..}` object, 
      *   whereby 'transactions' is the list of transactions and 'as-of' is the timestamp of the call.
@@ -604,7 +610,8 @@ const oh$ = (function() {
      * 
      *   May fire [onWalletPopup](#eventonwalletpopup) event against `oh$`.
      * @param {string} imparterTag
-     * @param {string} message - to sign
+     * @param {string} message - optional message to sign, if not provided, *token* value (from *enable* function) is signed.  Last
+     *   signature is remembered for use with other functions such as `createTransaction`, `getTransactions`.  
      * @returns {Promise} with the signature; may fire [onWalletPopup](#eventonwalletpopup) event against `oh$`
      */
     sign = sign;
@@ -630,12 +637,16 @@ const oh$ = (function() {
      *  > | imparter tag | credentials object | 
      *  > | --- | --- |
      *  > | eth-web3 | null |
-     *  > | ohledger | {message:.., signature:..} |
-     *  > | ohledger-web3 | {message:.., signature:..} |
-     *  > | ohledger-social | {message:.., signature:..} |
+     *  > | ohledger | {message:.., signature:.., isPrivate:..} |
+     *  > | ohledger-web3 | {message:.., signature:.., isPrivate:..} |
+     *  > | ohledger-social | {message:.., signature:.., isPrivate:..} |
      *  > | btc-manual | null |
      *  > 
-     *  > If *message* and *signature* are provided they are used instead of oh$ asking for wallet to resign message.
+     *  > If *message* and *signature* are provided they are used.  If either is not provided, the 
+     *  > *overhide* `token` value (as passed into `enable`) is used for signing and remembered for other operations
+     *  > suich as `getTransactions`.
+     *  >
+     *  > To create a private transaction, where possible, ensure to set *isPrivate* to `true`.
      *  >
      *  > For *overhide* ledger *message* must be a valid *overhide* `token` value such as passed into `enable`.
      *
@@ -829,6 +840,8 @@ const oh$ = (function() {
   async function sign(imparterTag, message) {
     if (!imparterTag in imparters) throw new Error("invalid imparterTag");
     if (await isEnabled && !__fetch) throw new Error('did you forget to `oh$.enable(..)`?');
+
+    if (!message) message = token;
 
     return await imparters[imparterTag].sign(message);
   }

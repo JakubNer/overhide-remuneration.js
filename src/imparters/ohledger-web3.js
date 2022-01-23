@@ -123,8 +123,9 @@ class ohledger_web3 {
     this.domFns.makePopupVisible();
 
     try {
-      await ohledger_fns.createTransaction(
+      const [message, signature] = await ohledger_fns.createTransaction(
         this.getToken(),
+        this.signedToken,
         amount, 
         from,
         to,
@@ -132,6 +133,10 @@ class ohledger_web3 {
         (from, signature, message) => this.overhide_wallet.showOhLedgerGratisIframeUri(uri, from, signature, message), 
         this.overhide_wallet.oh_ledger_transact_fn[this.mode], 
         options);   
+
+      if (message === this.getToken()) {
+        this.signedToken = signature;
+      }     
 
       return true;
     } finally {

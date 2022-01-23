@@ -1,6 +1,6 @@
 {
   "name": "ledgers.js",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "description": "JavaScript library for ledger-based authorizations :: abstracting different ledgers to be used in an application's authentication and authorization workflows.",
   "engines": {
     "node": ">=10.13.0"
@@ -33,7 +33,7 @@
     "@babel/preset-env": "^7.13.15",
     "babel-loader": "^8.2.2",
     "chai": "4.2.0",
-    "copyfiles": "2.1.0",
+    "copyfiles": "^2.4.1",
     "documentation": "9.3.1",
     "hard-source-webpack-plugin": "^0.13.1",
     "http-server": "^0.11.1",

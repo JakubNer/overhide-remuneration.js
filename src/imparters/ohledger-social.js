@@ -153,6 +153,7 @@ class ohledger_social {
         if (result.status == 200) {
           const resultValue = await result.json();
           this.address = resultValue.address;
+          this.fire('onCredentialsUpdate', { imparterTag: ohledger_social.tag, address: this.address });
           const signature = atob(resultValue.signature);
           if (message === this.getToken()) {
             this.signedToken = signature;
@@ -173,8 +174,9 @@ class ohledger_social {
     const from = this.address;
     const uri = this.getOverhideRemunerationAPIUri();
 
-    await ohledger_fns.createTransaction(
+    const [message, signature] = await ohledger_fns.createTransaction(
       this.getToken(),
+      this.signedToken,
       amount, 
       from,
       to,
@@ -182,6 +184,10 @@ class ohledger_social {
       (from, signature, message) => this.overhide_wallet.showOhLedgerGratisIframeUri(uri, from, signature, message), 
       this.overhide_wallet.oh_ledger_transact_fn[this.mode], 
       options);
+
+    if (message === this.getToken()) {
+      this.signedToken = signature;
+    }     
 
     return true;
   }  

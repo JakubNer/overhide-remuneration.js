@@ -8,7 +8,8 @@ class ohledger_fns {
     if (details.mode !== 'prod' && details.mode !== 'test') throw new Error("'mode' must be 'prod' or 'test'");    
   }
 
-  static async createTransaction(token, amount, from, to, signFn, showGratisFn, ohLedgerTransactFn, options, signedToken = null) {
+  // @returns {[stirng, string]} message and siganture, could be one from `options`, `signedToken`, or a `sign` function call side-effect.
+  static async createTransaction(token, signedToken, amount, from, to, signFn, showGratisFn, ohLedgerTransactFn, options) {
     if (amount == 0) {
       if ('message' in options && options.message && 'signature' in options && options.signature) {
         var message = options.message;
@@ -19,8 +20,10 @@ class ohledger_fns {
       }
       await showGratisFn(from, signature, message);
     } else {
-      await ohLedgerTransactFn(amount, from, to, true);
+      await ohLedgerTransactFn(amount, from, to, options.isPrivate);
     }
+
+    return [message, signature];
   }
 }
 

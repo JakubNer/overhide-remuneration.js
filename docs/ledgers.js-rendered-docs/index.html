@@ -1414,7 +1414,7 @@ exclusively.</p>
 <tr>
 <td>ohledger-social</td>
 <td><code>{provider:..[, address:..]}</code></td>
-<td><code>null</code> to log-out; <code>provider</code> is one of 'google' or 'microsoft'; optionally provide <code>address</code> if known -- to tally without signing</td>
+<td><code>null</code> to log-out; <code>provider</code> is one of 'google' or 'microsoft'; optionally provide <code>address</code> if known.</td>
 </tr>
 <tr>
 <td>btc-manual</td>
@@ -1423,6 +1423,7 @@ exclusively.</p>
 </tr>
 </tbody>
 </table>
+<p>For <em>ohledger-social</em> the actual <em>address</em> will be retruned (via <em>onCredentialsUpdate</em> event) when calling <em>sign</em> or any other call that needs a signature.</p>
 </blockquote>
 
           </div>
@@ -2264,6 +2265,9 @@ imparter to a recipient</p>
 </tr>
 </tbody>
 </table>
+<p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
+this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
+public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
 
           </div>
@@ -2464,7 +2468,16 @@ whereby 'transactions' is the list of transactions and 'as-of' is the timestamp 
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>message</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    to sign
+	    optional message to sign, if not provided, 
+<em>token</em>
+ value (from 
+<em>enable</em>
+ function) is signed.  Last
+signature is remembered for use with other functions such as 
+<code>createTransaction</code>
+, 
+<code>getTransactions</code>
+.
 
           </div>
           
@@ -2584,15 +2597,15 @@ as the <em>to</em> address, not the specified <em>to</em> address.</p>
 </tr>
 <tr>
 <td>ohledger</td>
-<td>{message:.., signature:..}</td>
+<td>{message:.., signature:.., isPrivate:..}</td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td>{message:.., signature:..}</td>
+<td>{message:.., signature:.., isPrivate:..}</td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td>{message:.., signature:..}</td>
+<td>{message:.., signature:.., isPrivate:..}</td>
 </tr>
 <tr>
 <td>btc-manual</td>
@@ -2600,7 +2613,11 @@ as the <em>to</em> address, not the specified <em>to</em> address.</p>
 </tr>
 </tbody>
 </table>
-<p>If <em>message</em> and <em>signature</em> are provided they are used instead of oh$ asking for wallet to resign message.</p>
+<p>If <em>message</em> and <em>signature</em> are provided they are used.  If either is not provided, the
+<em>overhide</em> <code>token</code> value (as passed into <code>enable</code>) is used for signing and remembered for other operations
+suich as <code>getTransactions</code>.</p>
+<p>To create a private transaction, where possible, ensure to set <em>isPrivate</em> to <code>true</code>.</p>
+<p>For <em>overhide</em> ledger <em>message</em> must be a valid <em>overhide</em> <code>token</code> value such as passed into <code>enable</code>.</p>
 </blockquote>
 
           </div>

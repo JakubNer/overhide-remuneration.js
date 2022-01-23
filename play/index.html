@@ -207,7 +207,7 @@
           </p>
           <form id="sign"><p>
             <p><select name="imparterTag" class="w3-select w3-border" onchange="scrubForm(event); refreshCreds()"></select><label class="w3-text-blue">imparterTag</label></p>
-            <p><input name="message" class="w3-input w3-border" type="text" onchange="scrubForm(event)"><label class="w3-text-blue">message</label></p>
+            <p><input name="message" class="w3-input w3-border" type="text" onchange="scrubForm(event)"><label class="w3-text-blue">message (leave empty to sign token)</label></p>
           </p></form>
           <p><button class="w3-btn w3-blue w3-left-align w3-block" onclick="sign()">run sign()</button></p>
         </div>
@@ -248,11 +248,11 @@
 
     var data = {
       imparterTag: 'ohledger',
-      credentialsOptionsJSON: '{"address":"","secret":""}',
+      credentialsOptionsJSON: '{"address":"","secret":"","provider":"microsoft"}',
       networkDetailsJSON:'{"currency":"", "mode":""}',
       recipientJSON:'{"address":""}',
       isOnLedgeOptionsJSON:'{"message":"", "signature":""}',
-      transactionOptionsJSON:'{"message":"", "signature":""}',
+      transactionOptionsJSON:'{"message":"", "signature":"", "isPrivate":false}',
       since: '2019-01-01T00:00'
     };
     fillForms();
