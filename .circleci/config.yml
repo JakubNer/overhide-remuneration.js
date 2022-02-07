@@ -15,7 +15,7 @@ jobs:
           command: sleep 10
       - run:
           shell: /bin/sh
-          command: docker exec app /bin/sh -c 'cd /app; npm install -g npm@latest'
+          command: docker exec app /bin/sh -c 'cd /app; npm install -g npm@10.13.0'
       - run:
           shell: /bin/sh
           command: docker exec app /bin/sh -c 'apt-get -y update; apt-get -y install build-essential'
