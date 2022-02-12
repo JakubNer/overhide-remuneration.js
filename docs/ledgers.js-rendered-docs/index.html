@@ -2008,6 +2008,9 @@ exclusively.</p>
 </tr>
 </tbody>
 </table>
+<p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
+this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
+public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
 
           </div>
@@ -2132,6 +2135,9 @@ is that of the call (pass this to back-end to retrieve cached values at better A
 </tr>
 </tbody>
 </table>
+<p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
+this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
+public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
 
           </div>
