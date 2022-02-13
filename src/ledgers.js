@@ -507,14 +507,20 @@ const oh$ = (function() {
      *  > | imparter tag | recipient object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
-     *  > | ohledger | `{address:..}` |
-     *  > | ohledger-web3 | `{address:..}` |
-     *  > | ohledger-social | `{address:..}` |
+     *  > | ohledger | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-web3 | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-social | `{address:.., token:.., signature:..}` |
      *  > | btc-manual | `{address:..}` |
      *  >
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
-     *  > this method.  The easiest is to simply call *sign* without any parameters.  Without a properly signed *token*, only
-     *  > public transactions -- those created using *createTransaction* without `isPrivate` flag -- are retruned.
+     *  > this method.  
+     *  >
+     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
+     *  > 
+     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > 
+     *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
+     *  > `isPrivate` flag -- are retruned.
      *
      * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'tally':.., 'as-of':..}` object, whereby the 'tally' value is in US dollars: all transactions 
@@ -536,14 +542,20 @@ const oh$ = (function() {
      *  > | imparter tag | recipient object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
-     *  > | ohledger | `{address:..}` |
-     *  > | ohledger-web3 | `{address:..}` |
-     *  > | ohledger-social | `{address:..}` |
+     *  > | ohledger | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-web3 | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-social | `{address:.., token:.., signature:..}` |
      *  > | btc-manual | `{address:..}` |
      *  >
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
-     *  > this method.  The easiest is to simply call *sign* without any parameters.  Without a properly signed *token*, only
-     *  > public transactions -- those created using *createTransaction* without `isPrivate` flag -- are retruned.
+     *  > this method.  
+     *  >
+     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
+     *  > 
+     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > 
+     *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
+     *  > `isPrivate` flag -- are retruned.
      *
      * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'tally':.., 'as-of':..}` object, whereby the tally value is in imparter specific currency.
@@ -558,7 +570,6 @@ const oh$ = (function() {
      *   Retrieve transactions on the imparter's ledger, perhaps within a date range, from credentials set against 
      *   imparter to a recipient
      * @param {string} imparterTag
-     * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @param {Object} recepient - imparter specific object describing recipient of transactions to tally for.
      *
      *  > Recipient objects are as per:
@@ -566,15 +577,22 @@ const oh$ = (function() {
      *  > | imparter tag | recipient object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
-     *  > | ohledger | `{address:..}` |
-     *  > | ohledger-web3 | `{address:..}` |
-     *  > | ohledger-social | `{address:..}` |
+     *  > | ohledger | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-web3 | `{address:.., token:.., signature:..}` |
+     *  > | ohledger-social | `{address:.., token:.., signature:..}` |
      *  > | btc-manual | `{address:..}` |
      *  > 
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
-     *  > this method.  The easiest is to simply call *sign* without any parameters.  Without a properly signed *token*, only
-     *  > public transactions -- those created using *createTransaction* without `isPrivate` flag -- are retruned.
+     *  > this method.  
+     *  >
+     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
+     *  > 
+     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > 
+     *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
+     *  > `isPrivate` flag -- are retruned.
      *
+     * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'transactions': [{"transaction-value":..,"transaction-date":..},..], 'as-of':..}` object, 
      *   whereby 'transactions' is the list of transactions and 'as-of' is the timestamp of the call.
      */

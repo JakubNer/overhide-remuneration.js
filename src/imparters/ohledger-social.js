@@ -103,13 +103,20 @@ class ohledger_social {
     imparter_fns.getTxs_check_details(recipient, date);
 
     const to = recipient.address;
+    if ('token' in recipient && recipient.token && 'signature' in recipient && recipient.signature) {
+      var token = recipient.token;
+      var signature = recipient.signature;
+    } else {
+      var token = this.getToken();
+      var signature = this.signedToken;
+    }
     const uri = this.getOverhideRemunerationAPIUri();
 
     if (!this.mode) throw new Error("network 'mode' must be set, use setNetwork");
     if (!this.address) throw new Error("from 'address' not set: use setCredentials");
     const from = this.address;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch, this.signedToken);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, token, this.__fetch, signature);
   }
 
   async isOnLedger(options) {

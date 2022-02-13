@@ -1992,15 +1992,15 @@ exclusively.</p>
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>btc-manual</td>
@@ -2009,8 +2009,11 @@ exclusively.</p>
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
-public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
+this method.  </p>
+<p>You may provide a previous token as <code>token</code> and corresponding <code>signature</code> by <code>address</code>.</p>
+<p>Alternatively you may call <em>sign</em> without any parameters before this call; use the token and fresh signature from the <em>sign</em> call.</p>
+<p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
+<code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
 
           </div>
@@ -2119,15 +2122,15 @@ is that of the call (pass this to back-end to retrieve cached values at better A
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>btc-manual</td>
@@ -2136,8 +2139,11 @@ is that of the call (pass this to back-end to retrieve cached values at better A
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
-public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
+this method.  </p>
+<p>You may provide a previous token as <code>token</code> and corresponding <code>signature</code> by <code>address</code>.</p>
+<p>Alternatively you may call <em>sign</em> without any parameters before this call; use the token and fresh signature from the <em>sign</em> call.</p>
+<p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
+<code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
 
           </div>
@@ -2203,7 +2209,7 @@ The 'as-of' timestamp is that of the call (pass this to back-end to retrieve cac
   <p>Retrieve transactions on the imparter's ledger, perhaps within a date range, from credentials set against
 imparter to a recipient</p>
 
-    <div class='pre p1 fill-light mt0'>getTransactions(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, since: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>, recepient: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>getTransactions(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, recepient: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, since: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
   
 
@@ -2228,15 +2234,6 @@ imparter to a recipient</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>since</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-	    date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
             <span class='code bold'>recepient</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
 	    imparter specific object describing recipient of transactions to tally for.
 <blockquote>
@@ -2255,15 +2252,15 @@ imparter to a recipient</p>
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td><code>{address:..}</code></td>
+<td><code>{address:.., token:.., signature:..}</code></td>
 </tr>
 <tr>
 <td>btc-manual</td>
@@ -2272,9 +2269,21 @@ imparter to a recipient</p>
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  The easiest is to simply call <em>sign</em> without any parameters.  Without a properly signed <em>token</em>, only
-public transactions -- those created using <em>createTransaction</em> without <code>isPrivate</code> flag -- are retruned.</p>
+this method.  </p>
+<p>You may provide a previous token as <code>token</code> and corresponding <code>signature</code> by <code>address</code>.</p>
+<p>Alternatively you may call <em>sign</em> without any parameters before this call; use the token and fresh signature from the <em>sign</em> call.</p>
+<p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
+<code>isPrivate</code> flag -- are retruned.</p>
 </blockquote>
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>since</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+	    date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
 
           </div>
           
