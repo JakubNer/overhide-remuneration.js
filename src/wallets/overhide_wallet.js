@@ -5,8 +5,8 @@ class overhide_wallet {
   };
 
   remuneration_uri = {
-    'prod': 'https://ledger.overhide.io/v1',
-    'test': 'https://test.ledger.overhide.io/v1'
+    'prod': 'https://ledger.overhide.io/v1'
+    ,'test': 'https://test.ledger.overhide.io/v1'
   }
 
   constructor(domFns) {
@@ -36,7 +36,7 @@ class overhide_wallet {
 
   async showOhLedgerGratisIframeUri(uri, from, signature, message) {
     this.domFns.hideAllPopupContents();
-    this.domFns.setFrame(`${uri}/gratis.html?address=${from}&signature=${signature}&message=${message}`);
+    this.domFns.setFrame(`${uri}/gratis.html?address=${from}&signature=${signature}&b64message=${btoa(message)}`);
     await this.domFns.makePopupVisible();
   }
 
