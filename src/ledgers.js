@@ -683,6 +683,7 @@ const oh$ = (function() {
 
   var doEnable = null;
   const isEnabled = new Promise((resolve) => doEnable = resolve);
+  var authZHeader = null;
   var token = null;
   var __fetch = null;
   var imparterTags = [ohledger.tag, ohledger_social.tag, btc_manual.tag];
@@ -729,18 +730,19 @@ const oh$ = (function() {
   imparters[eth_web3.tag] = new eth_web3(
     domFns,
     web3Wallet, 
-    () => token,
+    () => authZHeader,
     (...args) => __fetch(...args),
     (which, params) => fire(which, params));
   imparters[btc_manual.tag] = new btc_manual(
     domFns,
-    () => token,
+    () => authZHeader,
     (...args) => __fetch(...args),
     (which, params) => fire(which, params));
   imparters[ohledger_web3.tag] = new ohledger_web3(
     domFns,
     overhideWallet,
     web3Wallet,
+    () => authZHeader,
     () => token,
     (...args) => __fetch(...args),
     (which, params) => fire(which, params)
@@ -748,6 +750,7 @@ const oh$ = (function() {
   imparters[ohledger.tag] = new ohledger(
     overhideWallet,
     web3Wallet,
+    () => authZHeader,
     () => token,
     (...args) => __fetch(...args),
     (which, params) => fire(which, params)
@@ -756,6 +759,7 @@ const oh$ = (function() {
     domFns,
     overhideWallet,
     web3Wallet,
+    () => authZHeader,
     () => token,
     (...args) => __fetch(...args),
     (which, params) => fire(which, params)
@@ -766,7 +770,8 @@ const oh$ = (function() {
   overhideWallet.init();
 
   function enable(_token, {fetcher} = {fetcher: fetch}) {
-    token = `Bearer ${_token}`;
+    token = _token;
+    authZHeader = `Bearer ${_token}`;
     __fetch = fetcher;
     doEnable(true);
   }

@@ -12,9 +12,9 @@ class btc_manual {
   address = null;
   mode = 'test';
 
-  constructor(domFns, getToken, __fetch, fire) {
+  constructor(domFns, getAuthZHeader, __fetch, fire) {
     this.domFns = domFns;
-    this.getToken = getToken;
+    this.getAuthZHeader = getAuthZHeader;
     this.__fetch = __fetch;
     this.fire = fire;
 
@@ -94,7 +94,7 @@ class btc_manual {
     const now = (new Date()).toISOString();
     const result = await this.__fetch(`https://${hostPrefix}rates.overhide.io/rates/sat/${now}`, {
         headers: new Headers({
-          'Authorization': this.getToken()
+          'Authorization': this.getAuthZHeader()
         })
       })
       .then(res => res.json())
@@ -115,7 +115,7 @@ class btc_manual {
     if (!this.address) throw new Error("from 'address' not set: use setCredentials");
     const from = this.address;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getAuthZHeader(), this.__fetch);
   }
 
   async isOnLedger(options) {
@@ -133,7 +133,7 @@ class btc_manual {
       var signature = await this.sign(message);
     }
 
-    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getToken(), this.__fetch);
+    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getAuthZHeader(), this.__fetch);
   }
 
   async sign(message) {
@@ -141,7 +141,7 @@ class btc_manual {
 
     this.domFns.hideAllPopupContents();
     const base64Message = btoa(message);
-    this.domFns.setFrame(`${this.url}/btc_manual_sign.html?address=${this.address}&message=${base64Message}&token=${this.getToken()}&isTest=${this.mode == 'test'}`, 70, 40);
+    this.domFns.setFrame(`${this.url}/btc_manual_sign.html?address=${this.address}&message=${base64Message}&token=${this.getAuthZHeader()}&isTest=${this.mode == 'test'}`, 70, 40);
     return atob(await this.domFns.makePopupVisible());
   }
 

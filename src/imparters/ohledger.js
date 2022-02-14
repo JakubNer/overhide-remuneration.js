@@ -9,9 +9,10 @@ class ohledger {
   mode = 'test';
   signedToken = null;
 
-  constructor(overhide_wallet, web3_wallet, getToken, __fetch, fire) {
+  constructor(overhide_wallet, web3_wallet, getAuthZHeader, getToken, __fetch, fire) {
     this.overhide_wallet = overhide_wallet;
     this.eth_accounts = web3_wallet.eth_accounts;
+    this.getAuthZHeader = getAuthZHeader;
     this.getToken = getToken;
     this.__fetch = __fetch;
     this.fire = fire;
@@ -86,10 +87,10 @@ class ohledger {
 
     const to = recipient.address;
     if ('token' in recipient && recipient.token && 'signature' in recipient && recipient.signature) {
-      var token = `Bearer ${recipient.token}`;
+      var authZHeader = `Bearer ${recipient.token}`;
       var signature = recipient.signature;
     } else {
-      var token = this.getToken();
+      var authZHeader = this.getAuthZHeader();
       var signature = this.signedToken;
     }
     const uri = this.getOverhideRemunerationAPIUri();
@@ -98,7 +99,7 @@ class ohledger {
     if (!this.address) throw new Error("from 'address' not set: use setCredentials");
     const from = this.address;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, token, this.__fetch, signature);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, authZHeader, this.__fetch, signature);
   }
 
   async isOnLedger(options) {
@@ -116,7 +117,7 @@ class ohledger {
       var signature = await this.sign(message);
     }
 
-    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getToken(), this.__fetch);
+    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getAuthZHeader(), this.__fetch);
   }
 
   async sign(message) {

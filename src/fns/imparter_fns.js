@@ -3,7 +3,7 @@ class imparter_fns {
     if (date && !(date instanceof Date)) throw new Error("'date' must be a Date is passed in");
     if (!('address' in recipient) || !recipient.address) throw new Error("'address' required in recipient");  }
 
-  static async getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, token, __fetch, signedToken = null) {
+  static async getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, authZHeader, __fetch, signedToken = null) {
     if (!uri) throw new Error('no uri for request, unsupported network selected in wallet?');
     let since = '';
     if (date) {
@@ -19,7 +19,7 @@ class imparter_fns {
     }
     return await __fetch(`${uri}/get-transactions/${from}/${to}?tally-only=${tallyOnly ? 'true' : 'false'}${dollarsQuery}${since}&include-refunds=true${signedTokenQuery}`, {
         headers: new Headers({
-          'Authorization': token
+          'Authorization': authZHeader
         })
       })
       .then(res => res.json())

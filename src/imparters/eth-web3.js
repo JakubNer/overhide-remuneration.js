@@ -9,11 +9,11 @@ class eth_web3 {
     'rinkeby':'https://rinkeby.ethereum.overhide.io'
   };
 
-  constructor(domFns, web3_wallet, getToken, __fetch, fire) {
+  constructor(domFns, web3_wallet, getAuthZHeader, __fetch, fire) {
     this.domFns = domFns;
     this.web3_wallet = web3_wallet;
     this.eth_accounts = web3_wallet.eth_accounts;
-    this.getToken = getToken;
+    this.getAuthZHeader = getAuthZHeader;
     this.__fetch = __fetch;
     this.fire = fire;
 
@@ -65,7 +65,7 @@ class eth_web3 {
     const now = (new Date()).toISOString();
     const result = await this.__fetch(`https://${hostPrefix}rates.overhide.io/rates/wei/${now}`, {
         headers: new Headers({
-          'Authorization': this.getToken()
+          'Authorization': this.getAuthZHeader()
         })
       })
       .then(res => res.json())
@@ -86,7 +86,7 @@ class eth_web3 {
     if (!this.web3_wallet.walletAddress) throw new Error("from 'walletAddress' not set: use wallet");
     var from = this.web3_wallet.walletAddress;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getAuthZHeader(), this.__fetch);
   }  
 
   async isOnLedger(options) {
@@ -104,7 +104,7 @@ class eth_web3 {
       var signature = await this.sign(message);
     }
 
-    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getToken(), this.__fetch);
+    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getAuthZHeader(), this.__fetch);
   }
 
   async sign(message) {

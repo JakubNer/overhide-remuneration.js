@@ -8,9 +8,9 @@ class btc_liquality {
     'bitcoin_testnet':'https://test.bitcoin.overhide.io'
   };
 
-  constructor(wallet, getToken, __fetch, fire) {
+  constructor(wallet, getAuthZHeader, __fetch, fire) {
     this.wallet = wallet;
-    this.getToken = getToken;
+    this.getAuthZHeader = getAuthZHeader;
     this.__fetch = __fetch;
     this.fire = fire;
 
@@ -62,7 +62,7 @@ class btc_liquality {
     const now = (new Date()).toISOString();
     const result = await this.__fetch(`https://${hostPrefix}rates.overhide.io/rates/wei/${now}`, {
         headers: new Headers({
-          'Authorization': this.getToken()
+          'Authorization': this.getAuthZHeader()
         })
       })
       .then(res => res.json())
@@ -83,7 +83,7 @@ class btc_liquality {
     if (!this.wallet.walletAddress) throw new Error("from 'walletAddress' not set: use wallet");
     var from = this.wallet.walletAddress;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getToken(), this.__fetch);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, this.getAuthZHeader(), this.__fetch);
   }  
 
   async isOnLedger(options) {
@@ -101,7 +101,7 @@ class btc_liquality {
       var signature = await this.sign(message);
     }
 
-    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getToken(), this.__fetch);
+    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getAuthZHeader(), this.__fetch);
   }
 
   async sign(message) {

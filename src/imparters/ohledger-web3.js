@@ -8,11 +8,12 @@ class ohledger_web3 {
   mode = 'test';
   signedToken = null;
 
-  constructor(domFns, overhide_wallet, web3_wallet, getToken, __fetch, fire) {
+  constructor(domFns, overhide_wallet, web3_wallet, getAuthZHeader, getToken, __fetch, fire) {
     this.domFns = domFns;
     this.web3_wallet = web3_wallet;
     this.overhide_wallet = overhide_wallet;
     this.__fetch = __fetch;
+    this.getAuthZHeader = getAuthZHeader;
     this.getToken = getToken;
     this.fire = fire;
   }
@@ -67,10 +68,10 @@ class ohledger_web3 {
 
     const to = recipient.address;
     if ('token' in recipient && recipient.token && 'signature' in recipient && recipient.signature) {
-      var token = `Bearer ${recipient.token}`;
+      var authZHeader = `Bearer ${recipient.token}`;
       var signature = recipient.signature;
     } else {
-      var token = this.getToken();
+      var authZHeader = this.getAuthZHeader();
       var signature = this.signedToken;
     }
     const uri = this.getOverhideRemunerationAPIUri();
@@ -79,7 +80,7 @@ class ohledger_web3 {
     if (!this.web3_wallet.walletAddress) throw new Error("from 'walletAddress' not set: use wallet");
     var from = this.web3_wallet.walletAddress;
 
-    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, token, this.__fetch, signature);
+    return await imparter_fns.getTxs_retrieve(uri, from, to, tallyOnly, tallyDollars, date, authZHeader, this.__fetch, signature);
   }  
 
   async isOnLedger(options) {
@@ -97,7 +98,7 @@ class ohledger_web3 {
       var signature = await this.sign(message);
     }
 
-    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getToken(), this.__fetch);
+    return await imparter_fns.isSignatureValid_call(uri, signature, message, from, this.getAuthZHeader(), this.__fetch);
   }
 
   async sign(message) {
