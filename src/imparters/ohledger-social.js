@@ -104,7 +104,7 @@ class ohledger_social {
 
     const to = recipient.address;
     if ('token' in recipient && recipient.token && 'signature' in recipient && recipient.signature) {
-      var token = recipient.token;
+      var token = `Bearer ${recipient.token}`;
       var signature = recipient.signature;
     } else {
       var token = this.getToken();
