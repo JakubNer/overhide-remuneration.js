@@ -402,9 +402,9 @@ const oh$ = (function() {
      *  > | imparter tag | credentials object | comments |
      *  > | --- | --- | --- |
      *  > | eth-web3 | N/A | not suppoted |
-     *  > | ohledger | `{address:..,secret:..}` | `address` is optional, if not set will be extracted from `secret` |
+     *  > | ohledger | `{address:..,secret:..}` | `address` is optional, if not set will be extracted from `secret`; `secret` is optional, if not set, `address` must be set, and this imparter will not be used to sign: will be used to check *isOnLedger*, *getTransactions*, *getTally*, and *getTallyDollars*, with explicitly provided signature in those calls' *options* objects. |
      *  > | ohledger-web3 | N/A | not supported |
-     *  > | ohledger-social | `{provider:..[, address:..]}` | `null` to log-out; `provider` is one of 'google' or 'microsoft'; optionally provide `address` if known. |
+     *  > | ohledger-social | `{provider:..[, address:..]}` | `null` to log-out; `provider` is one of 'google' or 'microsoft'; optionally provide `address` if known.  `provider` can be set to 'any' if this imparter will not be used to sign: will be used to check *isOnLedger*, *getTransactions*, *getTally*, and *getTallyDollars*, with explicitly provided signature in those calls' *options* objects.   |
      *  > | btc-manual | `{address:..}` | |
      *  >
      *  > For *ohledger-social* the actual *address* will be retruned (via *onCredentialsUpdate* event) when calling *sign* or any other call that needs a signature.
@@ -500,11 +500,11 @@ const oh$ = (function() {
      * @description
      *   Retrieve a tally of all transactions on the imparter's ledger--perhaps within a date range--converted to a US dollar amount.
      * @param {string} imparterTag
-     * @param {Object} recepient - imparter specific object describing recipient of transactions to tally for.
+     * @param {Object} options - imparter specific object describing options for the operation.
      *
      *  > Recipient objects are as per:
      *  >
-     *  > | imparter tag | recipient object |
+     *  > | imparter tag | options object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
      *  > | ohledger | `{address:.., token:.., signature:..}` |
@@ -515,12 +515,10 @@ const oh$ = (function() {
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
      *  > this method.  
      *  >
-     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
-     *  > 
-     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > Alternatively you may provide a previous token as `token` and corresponding `signature` signed by the from-address, the imparter's credentials.
      *  > 
      *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
-     *  > `isPrivate` flag -- are retruned.
+     *  > `isPrivate` flag -- are retruned.  All Ethereum and Bitcoin transactions are public.
      *
      * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'tally':.., 'as-of':..}` object, whereby the 'tally' value is in US dollars: all transactions 
@@ -535,11 +533,11 @@ const oh$ = (function() {
      * @description
      *   Retrieve a tally of all transactions on the imparter's ledger--perhaps within a date range.
      * @param {string} imparterTag
-     * @param {Object} recepient - imparter specific object describing recipient of transactions to tally for.
+     * @param {Object} options - imparter specific object describing options for the operation.
      *
      *  > Recipient objects are as per:
      *  >
-     *  > | imparter tag | recipient object |
+     *  > | imparter tag | options object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
      *  > | ohledger | `{address:.., token:.., signature:..}` |
@@ -550,12 +548,10 @@ const oh$ = (function() {
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
      *  > this method.  
      *  >
-     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
-     *  > 
-     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > Alternatively you may provide a previous token as `token` and corresponding `signature` signed by the from-address, the imparter's credentials.
      *  > 
      *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
-     *  > `isPrivate` flag -- are retruned.
+     *  > `isPrivate` flag -- are retruned.  All Ethereum and Bitcoin transactions are public.
      *
      * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'tally':.., 'as-of':..}` object, whereby the tally value is in imparter specific currency.
@@ -570,11 +566,11 @@ const oh$ = (function() {
      *   Retrieve transactions on the imparter's ledger, perhaps within a date range, from credentials set against 
      *   imparter to a recipient
      * @param {string} imparterTag
-     * @param {Object} recepient - imparter specific object describing recipient of transactions to tally for.
+     * @param {Object} options - imparter specific object describing options for the operation.
      *
      *  > Recipient objects are as per:
      *  >
-     *  > | imparter tag | recipient object |
+     *  > | imparter tag | options object |
      *  > | --- | --- |
      *  > | eth-web3 | `{address:..}` |
      *  > | ohledger | `{address:.., token:.., signature:..}` |
@@ -585,12 +581,10 @@ const oh$ = (function() {
      *  > To retrieve private transactions from *overhide* ledger ensure to sign the *token* (passed into *enable*) before calling
      *  > this method.  
      *  >
-     *  > You may provide a previous token as `token` and corresponding `signature` by `address`.
-     *  > 
-     *  > Alternatively you may call *sign* without any parameters before this call; use the token and fresh signature from the *sign* call.
+     *  > Alternatively you may provide a previous token as `token` and corresponding `signature` signed by the from-address, the imparter's credentials.
      *  > 
      *  > Without a properly signed *token* available to this call, only public transactions -- those created using *createTransaction* without 
-     *  > `isPrivate` flag -- are retruned.
+     *  > `isPrivate` flag -- are retruned.  All Ethereum and Bitcoin transactions are public.
      *
      * @param {Date} since - date to start tally since: date of oldest transaction to include.  No restriction if 'null'.
      * @returns {Promise} with the `{'transactions': [{"transaction-value":..,"transaction-date":..},..], 'as-of':..}` object, 
@@ -612,7 +606,7 @@ const oh$ = (function() {
      * 
      *  > The options objects are as follows:
      *  > 
-     *  > | imparter tag | credentials object | 
+     *  > | imparter tag | options object | 
      *  > | --- | --- |
      *  > | eth-web3 | {message:.., signature:..} |
      *  > | ohledger | {message:.., signature:..} |

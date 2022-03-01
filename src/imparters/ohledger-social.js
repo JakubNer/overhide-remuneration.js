@@ -141,6 +141,10 @@ class ohledger_social {
   }
 
   async sign(message) {
+    if (this.social !== 'google' && this.social !== 'microsoft') {
+      throw new Error("Attempting to sign but valid provider not set with `setCredentials(..)`. Valid providers: 'google', 'microsoft'.");
+    }
+
     try {
       const res = this.eth_accounts.create();
       const karnet = res.privateKey;

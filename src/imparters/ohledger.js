@@ -31,20 +31,22 @@ class ohledger {
   }  
 
   setCredentials(credentials) {
-    if (!('secret' in credentials)) throw new Error("'secret' must be passed in");
+    if (!('secret' in credentials) && !('address' in credentials)) throw new Error("At least one of 'address', 'secret' must be passed into `setCredentials(..)`.");
     if ('address' in credentials && credentials.address) {
       this.address = credentials.address.toLowerCase();
     } else {
       this.address = this.eth_accounts.privateKeyToAccount(credentials.secret).address.toLowerCase();
     }
     this.secret = credentials.secret;
-    try {
-      if (!(this.eth_accounts.recover(this.eth_accounts.sign('test message', this.secret)).toLowerCase() == this.address)) {
+    if (this.secret) {
+      try {
+        if (!(this.eth_accounts.recover(this.eth_accounts.sign('test message', this.secret)).toLowerCase() == this.address)) {
+          throw new Error("'secret' not valid for 'address");
+        }
+      } catch (err) {
         throw new Error("'secret' not valid for 'address");
-      }
-    } catch (err) {
-      throw new Error("'secret' not valid for 'address");
-    }        
+      }          
+    }
     this.fire('onCredentialsUpdate', { imparterTag: ohledger.tag, address: this.address, secret: this.secret});
     return true;
   }  
@@ -121,7 +123,7 @@ class ohledger {
   }
 
   async sign(message) {
-    if (!this.secret) throw new Error(`credentials for imparter ${ohledger.tag} not set`);
+    if (!this.secret) throw new Error(`Secret for imparter ${ohledger.tag} not set, cannot sign.`);
     const signature = await this.eth_accounts.sign(message, this.secret).signature;
     if (message === this.getToken()) {
       this.signedToken = signature;
