@@ -1,14 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset='utf-8' />
+  <meta charset='utf-8'>
   <title>ledgers.js :: overhide remuneration library for browser use $npm_package_version | Documentation</title>
   <meta name='description' content='JavaScript library for ledger-based authorizations :: abstracting different ledgers to be used in an application&#39;s authentication and authorization workflows.'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' rel='stylesheet' />
-  <link href='assets/style.css' rel='stylesheet' />
-  <link href='assets/github.css' rel='stylesheet' />
-  <link href='assets/split.css' rel='stylesheet' />
+  <link href='assets/bass.css' rel='stylesheet'>
+  <link href='assets/style.css' rel='stylesheet'>
+  <link href='assets/github.css' rel='stylesheet'>
+  <link href='assets/split.css' rel='stylesheet'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
@@ -20,6 +20,9 @@
             placeholder='Filter'
             id='filter-input'
             class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
@@ -312,9 +315,9 @@
 <p>Repository for this library is <a href="https://github.com/overhide/ledgers.js">https://github.com/overhide/ledgers.js</a>.</p>
 <p>The above repository contains a demo app of this library working in conjunction with:</p>
 <ul>
-<li>the <em>overhide</em> Ethereum remuneration provider (Rinkeby testnet -- <a href="https://rinkeby.ethereum.overhide.io">https://rinkeby.ethereum.overhide.io</a>) </li>
+<li>the <em>overhide</em> Ethereum remuneration provider (Rinkeby testnet -- <a href="https://rinkeby.ethereum.overhide.io">https://rinkeby.ethereum.overhide.io</a>)</li>
 <li>the <em>overhide-ledger</em> (test environment -- <a href="https://test.ledger.overhide.io">https://test.ledger.overhide.io</a>)</li>
-<li>the <em>overhide</em> Bitcoin remuneration provider (testnet -- <a href="https://test.bitcoin.overhide.io">https://test.bitcoin.overhide.io</a>) </li>
+<li>the <em>overhide</em> Bitcoin remuneration provider (testnet -- <a href="https://test.bitcoin.overhide.io">https://test.bitcoin.overhide.io</a>)</li>
 </ul>
 <h3>ABOUT</h3>
 <p>JavaScript library to be used in-browser and interrogate <em>overhide</em> remuneration providers as to validity
@@ -331,9 +334,11 @@ oh$.enable(token);
 oh$.addEventListener('onWalletChange', (e) => {...});
 </code></pre>
 <hr>
+</blockquote>
+<blockquote>
 <p>APIs abstracted by <em>ledgers.js</em> require a bearer-token.  The <code>token</code> (above) is passed in to <code>enable</code> the rest of the library's
 functionality.  <code>oh$.enable(..)</code> can be called every so often with a refreshed token.</p>
-<p> A token can be retrieved with a <code>GET /token</code> call (see <a href="https://token.overhide.io/swagger.html">https://token.overhide.io/swagger.html</a>).</p>
+<p>A token can be retrieved with a <code>GET /token</code> call (see <a href="https://token.overhide.io/swagger.html">https://token.overhide.io/swagger.html</a>).</p>
 <p>To retrieve tokens please first register for your own API key at <a href="https://token.overhide.io/register">https://token.overhide.io/register</a>.</p>
 </blockquote>
 <p>The library can be loaded straight into your HTML (along with pre-requisite <code>web3.min.js</code>) and accessed by its <code>oh$</code> property from the browser's <code>window</code> object:</p>
@@ -354,7 +359,7 @@ functionality.  <code>oh$.enable(..)</code> can be called every so often with a 
 <h3>IMPARTERS</h3>
 <p>The library works with a concept of <em>imprater</em> tags.  Wallets impart credentials, signatures, and transactions.  For
 <em>loose change</em>--where no wallet exists--the library can be interrogated as to which entities should be set by the
-user (can* functions); causing the entities to be imparted back to the user in a common code flow.  </p>
+user (can* functions); causing the entities to be imparted back to the user in a common code flow.</p>
 <p>The imparter tags are a simple naming convention.  For example if multiple Ethereum wallet APIs were imparting data
 they  would be individually tagged with a prefix "eth" and a dashed suffix.  No suffix indicates a <em>loose change</em>
 imparter:</p>
@@ -492,6 +497,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   
+
+  
 </section>
 
           
@@ -511,7 +518,7 @@ other than USD come online, we'll revisit this.</p>
   
 
   <p>Event called when wallets' state changes.</p>
-<p>  In user code:</p>
+<p>In user code:</p>
 <pre><code>oh$.addEventListener('onWalletChange', (e) => console.log(`wallet for ${e.imparterTag} is available:${e.isPresent}`));
 </code></pre>
 
@@ -576,6 +583,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   
+
+  
 </section>
 
           
@@ -595,7 +604,7 @@ other than USD come online, we'll revisit this.</p>
   
 
   <p>Event called when wallet is expected to popup.  Useful in case user wants to react to popup in UI.</p>
-<p>  In user code:</p>
+<p>In user code:</p>
 <pre><code>oh$.addEventListener('onWalletPopup', (e) => console.log(`wallet for ${e.imparterTag} popped`));
 </code></pre>
 
@@ -659,6 +668,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   
+
+  
 </section>
 
           
@@ -678,8 +689,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   <p>Event called when an credentials change for one of the tracked imparters.</p>
-<p>  Only called when credentials are valid as per imparter: ready to be used for signing, transacting.</p>
-<p>  In user code:</p>
+<p>Only called when credentials are valid as per imparter: ready to be used for signing, transacting.</p>
+<p>In user code:</p>
 <pre><code>oh$.addEventListener('onCredentialsUpdate', (e) => {
   console.log(`new address for ${e.imparterTag} is:${e.address}`);
   return;
@@ -764,6 +775,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   
+
+  
 </section>
 
           
@@ -783,8 +796,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   <p>Event called when the network changes for a particular imparter tag.</p>
-<p>  For example for "eth" the network could changed from "main" to "rinkeby".  </p>
-<p>  In user code:</p>
+<p>For example for "eth" the network could changed from "main" to "rinkeby".</p>
+<p>In user code:</p>
 <pre><code>oh$.addEventListener('onNetworkChange', (e) => {
   if (e.imparterTag === 'eth-web3') console.log(`new network selected for ${e.imparterTag} is:${e.name}`);
   if (e.imparterTag === /ohledger/.test(e.imparterTag)) console.log(`working in currency: ${e.currency}`);
@@ -824,19 +837,19 @@ other than USD come online, we'll revisit this.</p>
 <tbody>
 <tr>
 <td>eth-web3</td>
-<td><code>{imparterTag:..,name:('main'|'rinkeby'|'kovan')..,mode:('prod'|'test'), uri:..}</code></td>
+<td>`{imparterTag:..,name:('main'</td>
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{imparterTag:..,currency:'USD',mode:('prod'|'test'), uri:..}</code></td>
+<td>`{imparterTag:..,currency:'USD',mode:('prod'</td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{imparterTag:..,currency:'USD',mode:('prod'|'test'), uri:..}</code></td>
+<td>`{imparterTag:..,currency:'USD',mode:('prod'</td>
 </tr>
 <tr>
 <td>btc-manual</td>
-<td><code>{imparterTag:..,mode:('prod'|'test'), uri:..}</code></td>
+<td>`{imparterTag:..,mode:('prod'</td>
 </tr>
 </tbody>
 </table>
@@ -852,6 +865,8 @@ other than USD come online, we'll revisit this.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -888,9 +903,9 @@ other than USD come online, we'll revisit this.</p>
   
 
   <p>Enable (initialize) <code>oh$</code> by instrumenting with token for ledger access.</p>
-<p>  <code>oh$</code> calls may stall while waiting for this call to complete successfully.</p>
-<p>  A token can be retrieved with a <code>GET /token</code> call (see <a href="https://token.overhide.io/swagger.html">https://token.overhide.io/swagger.html</a>).</p>
-<p>  To retrieve tokens please first register for your own API key at <a href="https://token.overhide.io/register">https://token.overhide.io/register</a>.</p>
+<p><code>oh$</code> calls may stall while waiting for this call to complete successfully.</p>
+<p>A token can be retrieved with a <code>GET /token</code> call (see <a href="https://token.overhide.io/swagger.html">https://token.overhide.io/swagger.html</a>).</p>
+<p>To retrieve tokens please first register for your own API key at <a href="https://token.overhide.io/register">https://token.overhide.io/register</a>.</p>
 
     <div class='pre p1 fill-light mt0'>enable(token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
@@ -916,6 +931,8 @@ other than USD come online, we'll revisit this.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -989,6 +1006,8 @@ other than USD come online, we'll revisit this.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1009,7 +1028,7 @@ other than USD come online, we'll revisit this.</p>
 
   <p>Interrogate whether the imparter tag can have credentials set by the user: or does the wallet control it
 exclusively.</p>
-<p>  Only the following imparter(s) will return 'true':</p>
+<p>Only the following imparter(s) will return 'true':</p>
 <ul>
 <li>ohledger</li>
 <li>ohledger-social</li>
@@ -1065,6 +1084,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1085,7 +1106,7 @@ exclusively.</p>
 
   <p>Interrogate whether the imparter tag can have credentials generated by the user: or does the wallet control it
 exclusively.</p>
-<p>  Only the following imparter(s) will return 'true':</p>
+<p>Only the following imparter(s) will return 'true':</p>
 <ul>
 <li>ohledger</li>
 </ul>
@@ -1139,6 +1160,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1159,7 +1182,7 @@ exclusively.</p>
 
   <p>Interrogate whether the imparter tag can have network changed by the user via oh$: or does the wallet control it
 exclusively.</p>
-<p>  Only the following imparter(s) will return 'true':</p>
+<p>Only the following imparter(s) will return 'true':</p>
 <ul>
 <li>ohledger</li>
 <li>ohledger-web3</li>
@@ -1216,6 +1239,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1234,8 +1259,8 @@ exclusively.</p>
   </div>
   
 
-  <p>For imparters that can have credentials generated, generates them.  </p>
-<p>  Fires <a href="#eventoncredentialsupdate">onCredentialsUpdate</a> event against <code>oh$</code></p>
+  <p>For imparters that can have credentials generated, generates them.</p>
+<p>Fires <a href="#eventoncredentialsupdate">onCredentialsUpdate</a> event against <code>oh$</code></p>
 
     <div class='pre p1 fill-light mt0'>generateCredentials(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -1337,6 +1362,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1355,8 +1382,8 @@ exclusively.</p>
   </div>
   
 
-  <p>For imparters that can have credentials set, sets them.  </p>
-<p>  Fires <a href="#eventoncredentialsupdate">onCredentialsUpdate</a> event against <code>oh$</code>.</p>
+  <p>For imparters that can have credentials set, sets them.</p>
+<p>Fires <a href="#eventoncredentialsupdate">onCredentialsUpdate</a> event against <code>oh$</code>.</p>
 
     <div class='pre p1 fill-light mt0'>setCredentials(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, credentials: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -1459,6 +1486,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1477,8 +1506,8 @@ exclusively.</p>
   </div>
   
 
-  <p>For imparters that can have networks changed via oh$, changes it.  </p>
-<p>  Fires <a href="#eventonnetworkchange">onNetworkChange</a> event against <code>oh$</code>.</p>
+  <p>For imparters that can have networks changed via oh$, changes it.</p>
+<p>Fires <a href="#eventonnetworkchange">onNetworkChange</a> event against <code>oh$</code>.</p>
 
     <div class='pre p1 fill-light mt0'>setNetwork(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, details: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -1525,23 +1554,23 @@ exclusively.</p>
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{currency:'USD', mode:'prod'|'test'}</code></td>
-<td></td>
+<td>`{currency:'USD', mode:'prod'</td>
+<td>'test'}`</td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{currency:'USD', mode:'prod'|'test'}</code></td>
-<td></td>
+<td>`{currency:'USD', mode:'prod'</td>
+<td>'test'}`</td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td><code>{currency:'USD', mode:'prod'|'test'}</code></td>
-<td></td>
+<td>`{currency:'USD', mode:'prod'</td>
+<td>'test'}`</td>
 </tr>
 <tr>
 <td>btc-manual</td>
-<td><code>{mode:'prod'|'test'}</code></td>
-<td></td>
+<td>`{mode:'prod'</td>
+<td>'test'}`</td>
 </tr>
 </tbody>
 </table>
@@ -1567,6 +1596,8 @@ exclusively.</p>
 
       
     
+  
+
   
 
   
@@ -1636,6 +1667,8 @@ exclusively.</p>
 
       
     
+  
+
   
 
   
@@ -1750,6 +1783,8 @@ exclusively.</p>
   
 
   
+
+  
 </section>
 
           
@@ -1814,23 +1849,23 @@ exclusively.</p>
 <tbody>
 <tr>
 <td>eth-web3</td>
-<td><code>{name:('main'|'rinkeby'|'kovan').., mode:('prod'|'test'), uri:..}</code></td>
+<td>`{name:('main'</td>
 </tr>
 <tr>
 <td>ohledger</td>
-<td><code>{currency:'USD',mode:('prod'|'test'), uri:..}</code></td>
+<td>`{currency:'USD',mode:('prod'</td>
 </tr>
 <tr>
 <td>ohledger-web3</td>
-<td><code>{currency:'USD',mode:('prod'|'test'), uri:..}</code></td>
+<td>`{currency:'USD',mode:('prod'</td>
 </tr>
 <tr>
 <td>ohledger-social</td>
-<td><code>{currency:'USD',mode:('prod'|'test'), uri:..}</code></td>
+<td>`{currency:'USD',mode:('prod'</td>
 </tr>
 <tr>
 <td>btc-manual</td>
-<td><code>{mode:('prod'|'test'), uri:..}</code></td>
+<td>`{mode:('prod'</td>
 </tr>
 </tbody>
 </table>
@@ -1838,6 +1873,8 @@ exclusively.</p>
 
       
     
+  
+
   
 
   
@@ -1916,6 +1953,8 @@ exclusively.</p>
 
       
     
+  
+
   
 
   
@@ -2009,7 +2048,7 @@ exclusively.</p>
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  </p>
+this method.</p>
 <p>Alternatively you may provide a previous token as <code>token</code> and corresponding <code>signature</code> signed by the from-address, the imparter's credentials.</p>
 <p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
 <code>isPrivate</code> flag -- are retruned.  All Ethereum and Bitcoin transactions are public.</p>
@@ -2045,6 +2084,8 @@ is that of the call (pass this to back-end to retrieve cached values at better A
 
       
     
+  
+
   
 
   
@@ -2138,7 +2179,7 @@ is that of the call (pass this to back-end to retrieve cached values at better A
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  </p>
+this method.</p>
 <p>Alternatively you may provide a previous token as <code>token</code> and corresponding <code>signature</code> signed by the from-address, the imparter's credentials.</p>
 <p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
 <code>isPrivate</code> flag -- are retruned.  All Ethereum and Bitcoin transactions are public.</p>
@@ -2173,6 +2214,8 @@ The 'as-of' timestamp is that of the call (pass this to back-end to retrieve cac
 
       
     
+  
+
   
 
   
@@ -2267,7 +2310,7 @@ imparter to a recipient</p>
 </tbody>
 </table>
 <p>To retrieve private transactions from <em>overhide</em> ledger ensure to sign the <em>token</em> (passed into <em>enable</em>) before calling
-this method.  </p>
+this method.</p>
 <p>Alternatively you may provide a previous token as <code>token</code> and corresponding <code>signature</code> signed by the from-address, the imparter's credentials.</p>
 <p>Without a properly signed <em>token</em> available to this call, only public transactions -- those created using <em>createTransaction</em> without
 <code>isPrivate</code> flag -- are retruned.  All Ethereum and Bitcoin transactions are public.</p>
@@ -2315,6 +2358,8 @@ whereby 'transactions' is the list of transactions and 'as-of' is the timestamp 
   
 
   
+
+  
 </section>
 
           
@@ -2334,8 +2379,8 @@ whereby 'transactions' is the list of transactions and 'as-of' is the timestamp 
   
 
   <p>Determine if current credentials have some transaction on the imparter's ledger: transaction can be to anyone.</p>
-<p>  Intent is to validate beyond just a valid address.  To validate the address has been used.</p>
-<p>  May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>.</p>
+<p>Intent is to validate beyond just a valid address.  To validate the address has been used.</p>
+<p>May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>.</p>
 
     <div class='pre p1 fill-light mt0'>isOnLedger(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -2432,6 +2477,8 @@ whereby 'transactions' is the list of transactions and 'as-of' is the timestamp 
   
 
   
+
+  
 </section>
 
           
@@ -2451,8 +2498,8 @@ whereby 'transactions' is the list of transactions and 'as-of' is the timestamp 
   
 
   <p>Sign using the provided message using the credentials set against the specific imparter.</p>
-<p>  Note: wallet might pop up a dialog upon this call, consider that in your UX flow.</p>
-<p>  May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>.</p>
+<p>Note: wallet might pop up a dialog upon this call, consider that in your UX flow.</p>
+<p>May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>.</p>
 
     <div class='pre p1 fill-light mt0'>sign(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, message: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -2524,6 +2571,8 @@ signature is remembered for use with other functions such as
   
 
   
+
+  
 </section>
 
           
@@ -2543,7 +2592,7 @@ signature is remembered for use with other functions such as
   
 
   <p>Create a transaction on the imparter's ledger.</p>
-<p>  May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>; wallet might pop up a dialog upon this call, consider that in your UX flow.</p>
+<p>May fire <a href="#eventonwalletpopup">onWalletPopup</a> event against <code>oh$</code>; wallet might pop up a dialog upon this call, consider that in your UX flow.</p>
 
     <div class='pre p1 fill-light mt0'>createTransaction(imparterTag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, amount: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, to: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
@@ -2665,6 +2714,8 @@ suich as <code>getTransactions</code>.</p>
   
 
   
+
+  
 </section>
 
           
@@ -2719,6 +2770,8 @@ suich as <code>getTransactions</code>.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -2800,6 +2853,8 @@ suich as <code>getTransactions</code>.</p>
   
 
   
+
+  
 </section>
 
           
@@ -2847,6 +2902,8 @@ suich as <code>getTransactions</code>.</p>
         </div>
       
     </div>
+  
+
   
 
   

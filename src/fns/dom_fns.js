@@ -45,7 +45,10 @@ class dom_fns {
 
   // promise used for popups and resolutions via oh-ledger-* messages.
   setupNewPromise() {
-    console.assert(!this.resolve, 'oh-popup promise being set but already set when calling setupNewPromise(..)');
+    if (this.resolve) {
+      console.log('oh-popup promise being set but already set when calling setupNewPromise(..)');
+      this.resolve();
+    }
     return new Promise((rs, rj) => {
       this.resolve = rs;
       this.reject = rj;
@@ -73,7 +76,10 @@ class dom_fns {
     var popup = document.getElementById('oh-popup-container');
     this.hideAllPopupContents();
     popup.style.display='none';
-    console.assert(this.resolve, 'oh-popup promise not set yet calling makePopupHidden(..)');
+    if (!this.resolve) {
+      console.log('oh-popup promise not set yet calling makePopupHidden(..)');
+      return;
+    }
     if (isError) this.reject(params)
     else this.resolve(params);
     this.resolve = null;

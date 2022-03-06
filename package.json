@@ -1,6 +1,6 @@
 {
   "name": "ledgers.js",
-  "version": "4.7.1",
+  "version": "4.7.2",
   "description": "JavaScript library for ledger-based authorizations :: abstracting different ledgers to be used in an application's authentication and authorization workflows.",
   "engines": {
     "node": ">=10.13.0"
@@ -34,11 +34,11 @@
     "babel-loader": "^8.2.2",
     "chai": "4.2.0",
     "copyfiles": "^2.4.1",
-    "documentation": "9.3.1",
+    "documentation": "^13.2.5",
     "hard-source-webpack-plugin": "^0.13.1",
-    "http-server": "^0.11.1",
-    "mocha": "5.2.0",
-    "mocha-junit-reporter": "1.22.0",
+    "http-server": "^14.1.0",
+    "mocha": "^9.2.1",
+    "mocha-junit-reporter": "^2.0.2",
     "puppeteer": "^1.15.0",
     "watch": "1.0.2",
     "webpack": "^4.30.0",
