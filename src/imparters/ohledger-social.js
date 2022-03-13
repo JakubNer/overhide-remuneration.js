@@ -61,13 +61,9 @@ class ohledger_social {
       await popupPromise;
       this.address = null;
       this.social = null;
-    } else if ('provider' in credentials) {
+    } else {      
       this.social = credentials.provider;
-      if ('address' in credentials) {
-        this.address = credentials.address;
-      }
-    } else {
-      throw new Error("Incorrect credentials options, 'provider' is mandatory.");
+      this.address = credentials.address;
     }
     this.fire('onCredentialsUpdate', { imparterTag: ohledger_social.tag, address: this.address });
     return true;
