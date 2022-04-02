@@ -20,6 +20,11 @@ class ohledger_fns {
       }
       await showGratisFn(from, signature, message);
     } else {
+      if (amount < 50) {
+        const delta = 50 - amount;
+        alert(`Your transaction of ${amount} cents has been bumped to 50 cents to meet payment processor minimums.`);
+        amount = 50;
+      }
       await ohLedgerTransactFn(amount, from, to, options.isPrivate);
     }
 
